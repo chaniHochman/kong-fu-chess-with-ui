@@ -1,6 +1,8 @@
 from model.move_result import MoveResult
 from rules.rule_engine import RuleEngine
-
+from model.position import Position
+from input.board_mapper import CELL_SIZE
+from model.snapshot import GameSnapshot, PieceSnapshot
 # מנהל לוגיקה של משחק: מקבל מצב לוח, בודק מהלכים ומפעיל תנועות
 class GameEngine:
     # יוזם את המנוע עם אובייקט לוח, מנוע חוק וארביטר לזמן
@@ -47,3 +49,34 @@ class GameEngine:
     # נקרא כאשר המלך נאסר
     def notify_king_captured(self):
         self._game_over = True
+
+    def create_snapshot(self):
+        pieces = []
+        
+        #on all the board
+        for row in range(self._board.rows):
+
+            for col in range(self._board.cols):
+                
+                position=Position(row, col)
+                
+                piece = self._board.get_piece(position)
+
+                if piece is None:
+                    continue
+                
+                pixel_x = col * CELL_SIZE
+
+                pixel_y = row * CELL_SIZE
+
+                snapshot_piece = PieceSnapshot(piece.kind,piece.color,pixel_x,pixel_y,piece.state)
+
+                pieces.append(snapshot_piece)
+
+            return GameSnapshot(
+                board_width=self._board.cols,
+                board_height=self._board.rows,
+                pieces=pieces,
+                selected_cell=None,
+                game_over=self._game_over
+                )

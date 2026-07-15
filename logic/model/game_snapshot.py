@@ -1,11 +1,12 @@
 class PieceSnapshot:#מצב המשחק
     # תמונת מצב של כלי בודד לקריאה בלבד
-    def __init__(self, kind, color, pixel_x, pixel_y, state):
+    def __init__(self, kind, color, pixel_x, pixel_y, state,image):
         self.kind = kind
         self.color = color
         self.pixel_x = pixel_x
         self.pixel_y = pixel_y
         self.state = state
+        self.image=image
 
 
 class GameSnapshot:
