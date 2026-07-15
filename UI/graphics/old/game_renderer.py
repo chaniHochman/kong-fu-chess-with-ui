@@ -77,5 +77,5 @@ def draw_board(board, board_path: str | Path | None = None, size: tuple[int, int
             y = y_offset + row * tile
             sprite.draw_on(canvas, x, y)
             #canvas.put_text(name,score)
-            canvas.show()
+            # canvas.show()
     return canvas

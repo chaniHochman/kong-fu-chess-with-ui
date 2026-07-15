@@ -13,8 +13,6 @@ class Animation:
     """
     יוצר אנימציה חדשה.
 
-    Parameters
-    ----------
     frames : list[Img]
         רשימת כל התמונות של האנימציה.
 
@@ -34,7 +32,6 @@ class Animation:
         # זמן תחילת האנימציה
         self.started_at = time.time()
 
-    # ----------------------------------------------------------
 
     """
     מפעיל מחדש את האנימציה.
@@ -46,9 +43,6 @@ class Animation:
     def restart(self):
 
         self.started_at = time.time()
-
-    # ----------------------------------------------------------
-
     """
     מחזיר את התמונה (Frame) המתאימה לזמן הנוכחי.
 
@@ -57,7 +51,6 @@ class Animation:
     Img
         אובייקט Img המכיל את התמונה שיש לצייר.
     """
-
     def get_current_frame(self):
 
         if not self.frames:

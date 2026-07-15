@@ -1,11 +1,8 @@
 """
 מחלקה האחראית על טעינת כל קבצי הגרפיקה.
-
 המחלקה קוראת פעם אחת בלבד:
-
 • כל התמונות
 • כל קבצי ה-JSON
-
 ויוצרת עבור כל מצב Animation מוכן לשימוש.
 """
 
@@ -17,10 +14,6 @@ from graphics.animation import Animation
 
 class AssetLoader:
 
-    """
-    רשימת המצבים האפשריים של כל כלי.
-    """
-
     STATES = [
         "idle",
         "move",
@@ -28,8 +21,6 @@ class AssetLoader:
         "short_rest",
         "long_rest"
     ]
-
-    # ----------------------------------------------------------
 
     """
     יוצר טוען Assets חדש.
@@ -46,7 +37,7 @@ class AssetLoader:
 
     def __init__(self,
                  assets_folder="assets/pieces1",
-                 square_size=90):
+                 square_size=90):#לפי גודל תא בלוח
 
         self.assets_folder = Path(assets_folder)
 
@@ -101,14 +92,6 @@ class AssetLoader:
 
     """
     טוען מצב אחד של כלי.
-
-    לדוגמה:
-
-    idle
-
-    או
-
-    move
 
     הפונקציה קוראת:
 
