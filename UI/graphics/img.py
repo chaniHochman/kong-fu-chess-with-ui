@@ -86,11 +86,14 @@ class Img:
                     cv2.FONT_HERSHEY_SIMPLEX, font_size,
                     color, thickness, cv2.LINE_AA)
 
-    def show(self):
-        if self.img is None:
-            raise ValueError("Image not loaded.")
-        cv2.imshow("Image", self.img)
+    # def show(self):
+    #     if self.img is None:
+    #         raise ValueError("Image not loaded.")
+    #     cv2.imshow("Image", self.img)
 
+
+    def show_frame(self, canvas):
+        cv2.imshow("KungFu Chess", canvas.img)
     #copy the image to a new Img instance 
     def copy(self):
         new = Img()

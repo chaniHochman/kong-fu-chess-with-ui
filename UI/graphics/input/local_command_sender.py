@@ -1,3 +1,5 @@
+#מתרגמת פקודה לקריאה למנוע
+#כדי שהעכבר לא יכיר את GameEngine.
 class LocalCommandSender:
 
     def __init__(
