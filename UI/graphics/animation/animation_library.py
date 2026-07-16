@@ -4,6 +4,7 @@ from view.pieces.piece_loader import PieceLoader
 
 #עבור כל כלי שומר :סוג, צבע, מצב, ורשימת תמונות
 class AnimationLibrary:
+    
     """
     Stores all animation frames in memory.
 
@@ -22,13 +23,11 @@ class AnimationLibrary:
             self,
             kind,
             color,
-            state,
-            frames_count
+            state
     ):
         """
         Loads all frames of one animation.
         """
-
 
         key = (
             kind,
@@ -36,22 +35,12 @@ class AnimationLibrary:
             state
         )
 
+        frames_count = self._piece_loader.count_frames(kind, color, state)
 
-        frames = []
-
-
-        for i in range(frames_count):
-
-            frame = self._piece_loader.load_piece(
-                kind,
-                color,
-                state,
-                i
-            )
-
-            frames.append(frame)
-
-
+        frames = [
+            self._piece_loader.load_piece(kind, color, state, i + 1)
+            for i in range(frames_count)
+        ]
 
         self._animations[key] = frames
 

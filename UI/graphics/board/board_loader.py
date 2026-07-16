@@ -44,7 +44,8 @@ class BoardLoader:
 
     
     def get_image(self):
-
+        if self._board_image is None:
+            self.load()
         return self._board_image
 
 

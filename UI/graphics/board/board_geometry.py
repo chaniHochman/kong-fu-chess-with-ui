@@ -4,9 +4,8 @@
 
 from dataclasses import dataclass
 
-import view.config as config
-
-from model.position import Position
+import UI.graphics.config as config
+from model.position import Position 
 
 
 @dataclass

@@ -1,3 +1,4 @@
+from pathlib import Path
 import pathlib
 import sys
 
@@ -16,24 +17,24 @@ from logic.engine.game_engine import GameEngine
 
 from logic.input.board_mapper import BoardMapper
 from logic.input.controller import Controller
+from logic.input.board_mapper import CELL_SIZE
+
+from UI.graphics.display_manager import DisplayManager
+from UI.graphics.board.board_geometry import BoardGeometry
+
+from UI.graphics.board.board_loader import BoardLoader
+from UI.graphics.board.board_renderer import BoardRenderer
+
+from UI.graphics.pieces.piece_renderer import PieceRenderer
+from UI.graphics.animation.piece_animator import PieceAnimator
+from UI.graphics.animation.animation_library import AnimationLibrary
+from UI.graphics.pieces.piece_loader import PieceLoader
 
 
-from view.display_manager import DisplayManager
-from view.geometry import BoardGeometry
-
-from view.board_loader import BoardLoader
-from view.board_renderer import BoardRenderer
-
-from view.pieces.piece_renderer import PieceRenderer
-from view.pieces.piece_animator import PieceAnimator
-from view.pieces.animation_library import AnimationLibrary
-from view.pieces.piece_loader import PieceLoader
+from UI.graphics.input.mouse_command_extractor import MouseCommandExtractor
+from UI.graphics.input.local_command_sender import LocalCommandSender
 
 
-from view.input.mouse_command_extractor import MouseCommandExtractor
-from view.input.local_command_sender import LocalCommandSender
-
-from pathlib import Path
 
 def build_game():
 
@@ -43,14 +44,14 @@ def build_game():
 
     board = parser.parse_to_board(
         """
-        KW......KB
-        .........
-        .........
-        .........
-        .........
-        .........
-        .........
-        QW......QB
+        bR bN bB bQ bK bB bN bR
+        bP bP bP bP bP bP bP bP
+        .  .  .  .  .  .  .  .
+        .  .  .  .  .  .  .  .
+        .  .  .  .  .  .  .  .
+        .  .  .  .  .  .  .  .
+        wP wP wP wP wP wP wP wP
+        wR wN wB wQ wK wB wN wR
         """
     )
 
@@ -65,7 +66,7 @@ def build_game():
     
     arbiter = RealTimeArbiter(
         board,
-        piece_animator
+        piece_animator=piece_animator
     )
 
 
@@ -108,12 +109,17 @@ def build_game():
 
     # טעינת תמונות כלים
 
-    piece_loader = PieceLoader()
+    piece_loader = PieceLoader(Path("UI/assets/pieces1"))
 
 
     animation_library = AnimationLibrary(
         piece_loader
     )
+
+    for kind in ("K", "Q", "R", "B", "N", "P"):
+        for color in ("W", "B"):
+            for state in ("idle", "move", "jump", "short_rest", "long_rest"):
+                animation_library.load_animation(kind, color, state)
 
 
     piece_renderer = PieceRenderer(
@@ -123,12 +129,11 @@ def build_game():
 
 
 
-    board_loader = BoardLoader(Path("assets/board.png"),
-    geometry)
+    board_loader = BoardLoader(Path("UI/assets/board.png"), geometry)
+    board_loader.load()
 
 
-
-    board_renderer = BoardRenderer(board_renderer)
+    board_renderer = BoardRenderer(board_loader)
 
 
 

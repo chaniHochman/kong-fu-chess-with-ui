@@ -28,7 +28,7 @@ class RealTimeArbiter:
             target,
             is_jump=is_jump
         )
-        piece.state = "jumping" if is_jump else "moving"
+        piece.state = "jump" if is_jump else "move"
         # מכניס לרשימת תנועות פעילות
         self._active_motions.append(motion)
         if self._piece_animator:

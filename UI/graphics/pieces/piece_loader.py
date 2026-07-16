@@ -21,6 +21,11 @@ class PieceLoader:
 
 
 
+    def count_frames(self, kind, color, state) -> int:
+        folder = kind.upper() + color.upper()
+        sprites_dir = self._assets_root / folder / "states" / state / "sprites"
+        return len(list(sprites_dir.glob("*.png")))
+
     def load_piece(
             self,
             kind: str,

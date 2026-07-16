@@ -66,6 +66,7 @@ class DisplayManager:
         flags,
         param
         ):
+        command=None
         if event == cv2.EVENT_LBUTTONDOWN:
 
             command = self._mouse_extractor.extract_left_click(
