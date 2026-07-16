@@ -15,7 +15,7 @@ class LocalCommandSender:
 
         if isinstance(command, ClickCommand):
 
-            self._controller.handle_click(
+            self._controller.on_click(
                 command.position
             )
 

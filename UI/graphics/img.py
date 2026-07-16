@@ -92,8 +92,7 @@ class Img:
     #     cv2.imshow("Image", self.img)
 
 
-    def show_frame(self, canvas):
-        cv2.imshow("KungFu Chess", canvas.img)
+  
     #copy the image to a new Img instance 
     def copy(self):
         new = Img()

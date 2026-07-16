@@ -1,5 +1,5 @@
-from model.piece import Piece
-from model.position import Position
+from logic.model.piece import Piece
+from logic.model.position import Position
 
 
 class Board:

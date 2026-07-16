@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from model.position import Position
-from rules.piece_rules import is_legal_piece_move
+from logic.model.position import Position
+from logic.rules.piece_rules import is_legal_piece_move
 
 
 @dataclass

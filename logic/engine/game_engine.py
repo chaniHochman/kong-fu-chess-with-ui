@@ -1,8 +1,8 @@
-from model.move_result import MoveResult
-from rules.rule_engine import RuleEngine
-from model.position import Position
-from input.board_mapper import CELL_SIZE
-from model.snapshot import GameSnapshot, PieceSnapshot
+from logic.model.move_result import MoveResult
+from logic.rules.rule_engine import RuleEngine
+from logic.model.position import Position
+from logic.input.board_mapper import CELL_SIZE
+from logic.model.game_snapshot import GameSnapshot, PieceSnapshot
 # מנהל לוגיקה של משחק: מקבל מצב לוח, בודק מהלכים ומפעיל תנועות
 class GameEngine:
     # יוזם את המנוע עם אובייקט לוח, מנוע חוק וארביטר לזמן
@@ -15,7 +15,10 @@ class GameEngine:
     # מחזיר האם המשחק נגמר
     def is_game_over(self):
         return self._game_over
-
+    
+    def get_piece(self, position):
+        return self._board.get_piece(position)
+    
     # בקשת מהלך מהמיקום source ליעד target (Positions)
     def request_move(self, source, target):
         # אם המשחק כבר הסתיים — אין לבצע מהלכים
@@ -69,14 +72,14 @@ class GameEngine:
 
                 pixel_y = row * CELL_SIZE
 
-                snapshot_piece = PieceSnapshot(piece.kind,piece.color,pixel_x,pixel_y,piece.state)
+                snapshot_piece = PieceSnapshot(id(piece),piece.kind,piece.color,pixel_x,pixel_y,piece.state,None)
 
                 pieces.append(snapshot_piece)
 
-            return GameSnapshot(
-                board_width=self._board.cols,
-                board_height=self._board.rows,
-                pieces=pieces,
-                selected_cell=None,
-                game_over=self._game_over
-                )
+        return GameSnapshot(
+            board_width=self._board.cols,
+            board_height=self._board.rows,
+            pieces=pieces,
+            selected_cell=None,
+            game_over=self._game_over
+            )

@@ -2,7 +2,7 @@
 
 # הוא רק אומר לכל אחד מתי לעבוד.isplayManager – חיבור הכול: לולאת המשחק, עדכון (update), ציור (render), קליטת עכבר והצגת המסך.
 import cv2
-
+from img import Img
 from view.config import FRAME_DELAY_MS
 class DisplayManager:
 
@@ -48,11 +48,11 @@ class DisplayManager:
     #build one frame
     def render(self):
 
-        canvas = self._board_loader.fresh_canvas()
+        canvas = self._board_loader.get_image().copy()
 
         snapshot = self._game_engine.create_snapshot()
    
-        for renderer in self.renderers:
+        for renderer in self._renderers:
             renderer.render(canvas, snapshot)
         
         return canvas
@@ -84,7 +84,10 @@ class DisplayManager:
         if command is not None:
 
             self._command_sender.send(command)
-
+    
+    def show_frame(self,canvas):
+        cv2.imshow("KungFu Chess", canvas.img)
+    
     def run(self):
         cv2.namedWindow(
                 self._window_name
@@ -104,5 +107,6 @@ class DisplayManager:
             self.show_frame(canvas)    
 
             key = cv2.waitKey(FRAME_DELAY_MS)
-
+            # if key == 27:
+            #     break
         cv2.destroyAllWindows()

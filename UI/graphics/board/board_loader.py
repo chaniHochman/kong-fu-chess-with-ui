@@ -18,25 +18,24 @@ class BoardLoader:
 
         self._image_path = image_path
         self._geometry = geometry
-
         self._board_image = None
-
 
     def load(self) -> None:
         """
         Loads the board image from disk.
         """
+        if self._board_image is None:
 
-        self._board_image = Img()
+            self._board_image = Img()
 
-        img.read(
-            self._image_path,
-            size=(
-                self._geometry.window_width,
-                self._geometry.window_height
+            self._board_image.read(
+                self._image_path,
+                size=(
+                    self._geometry.window_width,
+                    self._geometry.window_height
+                )
             )
-        )
-
+            return self._board_image
         # img.img = ensure_alpha(img.img)#תמונה עם שקיפות
 
         # self._board_image = img
@@ -46,7 +45,7 @@ class BoardLoader:
     
     def get_image(self):
 
-        return self.board_img
+        return self.board_image
 
 
 

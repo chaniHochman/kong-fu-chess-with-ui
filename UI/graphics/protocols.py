@@ -7,9 +7,7 @@ class Renderer(Protocol):
     def render(self, canvas:Img, snapshot) -> None:
         pass
 
-
 #  חוזה לכל מחלקה שטוענת משאבים.
-
 class Loader(Protocol):
 
     def load(self) -> None:

@@ -1,4 +1,4 @@
-from model.position import Position
+from logic.model.position import Position
 
 CELL_SIZE = 100
 #ממיר בין פיקסלים לתאים (עמודה, שורה)

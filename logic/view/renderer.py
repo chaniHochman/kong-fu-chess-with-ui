@@ -1,4 +1,4 @@
-from input.board_mapper import CELL_SIZE
+from logic.input.board_mapper import CELL_SIZE
 
 class Renderer:
     # מקבל ממשק ציור עטוף ומצייר את המשחק לפי GameSnapshot

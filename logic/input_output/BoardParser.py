@@ -1,7 +1,7 @@
 #יצירת לוח מטקסט
-from model.board import Board
-from model.position import Position
-from model.piece import Piece
+from logic.model.board import Board
+from logic.model.position import Position
+from logic.model.piece import Piece
 
 
 # קורא טקסט לוח ומחזיר מטריצה של תאים (כפי שמצופה במבחנים הישנים)

@@ -1,7 +1,5 @@
 #ציור הלוח על הקנבס.
-#
 # PieceRenderer שואל את PieceAnimator
-
 # איפה הכלי?
 #ואז PieceRenderer מצייר אותו.
 

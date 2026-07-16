@@ -1,5 +1,5 @@
-from model.board import Board
-from model.position import Position
+from logic.model.board import Board
+from logic.model.position import Position
 
 
 # מדפיס אובייקט `Board` חזרה לפורמט טקסט

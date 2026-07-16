@@ -1,14 +1,14 @@
-from realtime.motion import Motion
-from model.position import Position
+from logic.realtime.motion import Motion
+from logic.model.position import Position
 
 # ניהול זמן ותנועות
 class RealTimeArbiter:
     
     # אתחול המנהל: שומר הפניות ללוח ולמנוע המשחק
-    def __init__(self, board, game_engine=None):
+    def __init__(self, board, game_engine=None, piece_animator=None):
         self._board = board
         self._game_engine = game_engine
-
+        self._piece_animator = piece_animator
         # רשימת תנועות פעילות
         self._active_motions = []
     
@@ -31,7 +31,19 @@ class RealTimeArbiter:
         piece.state = "jumping" if is_jump else "moving"
         # מכניס לרשימת תנועות פעילות
         self._active_motions.append(motion)
+        if self._piece_animator:
 
+            self._piece_animator.start_motion(
+                id(piece),
+
+                source[1] * CELL_SIZE,
+                source[0] * CELL_SIZE,
+
+                target[1] * CELL_SIZE,
+                target[0] * CELL_SIZE,
+
+                motion.time_left
+            )
     # מקדם את הזמן המדומה ומסיים תנועות שהזמן שלהן תם
     def advance_time(self, ms):
        
