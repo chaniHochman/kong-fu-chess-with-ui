@@ -33,14 +33,14 @@ from view.pieces.piece_loader import PieceLoader
 from view.input.mouse_command_extractor import MouseCommandExtractor
 from view.input.local_command_sender import LocalCommandSender
 
-
+from pathlib import Path
 
 def build_game():
 
     #loade board
 
     parser = BoardParser()
-    
+
     board = parser.parse_to_board(
         """
         KW......KB
@@ -54,38 +54,20 @@ def build_game():
         """
     )
 
-
-
-    # ==========================
-    # 2. מנוע חוקים
-    # ==========================
-
     rule_engine = RuleEngine(board)
 
-
-
-    # ==========================
-    # 3. אנימציה
-    # ==========================
+    #animation
 
     piece_animator = PieceAnimator()
 
 
-
-    # ==========================
-    # 4. RealTimeArbiter
-    # ==========================
-
+    # RealTimeArbiter
+    
     arbiter = RealTimeArbiter(
         board,
         piece_animator
     )
 
-
-
-    # ==========================
-    # 5. GameEngine
-    # ==========================
 
     engine = GameEngine(
         board,
@@ -97,39 +79,25 @@ def build_game():
     arbiter._game_engine = engine
 
 
-
-    # ==========================
-    # 6. Controller
-    # ==========================
-
     mapper = BoardMapper(
         board.rows,
         board.cols
     )
-
 
     controller = Controller(
         engine,
         mapper
     )
 
-
-
-    # ==========================
-    # 7. View
-    # ==========================
-
+    # View
 
     geometry = BoardGeometry()
-
 
 
     mouse_extractor = MouseCommandExtractor(
         mapper,
         geometry
     )
-
-
 
     command_sender = LocalCommandSender(
         controller,
@@ -155,11 +123,12 @@ def build_game():
 
 
 
-    board_loader = BoardLoader()
+    board_loader = BoardLoader(Path("assets/board.png"),
+    geometry)
 
 
 
-    board_renderer = BoardRenderer()
+    board_renderer = BoardRenderer(board_renderer)
 
 
 

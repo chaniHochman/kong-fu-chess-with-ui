@@ -45,7 +45,7 @@ class BoardLoader:
     
     def get_image(self):
 
-        return self.board_image
+        return self._board_image
 
 
 

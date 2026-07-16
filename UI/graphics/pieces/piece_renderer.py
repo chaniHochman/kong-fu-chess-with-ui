@@ -7,7 +7,7 @@ class PieceRenderer:
     Draws all pieces on the board.
     """
     def __init__(self,
-            animation_library
+            animation_library,
             piece_animator
             ):
 
