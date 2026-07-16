@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
-from view.img import Img
-from view.image_utils import ensure_alpha
+from UI.graphics.img import Img
+from UI.graphics.image_utils import ensure_alpha
 
 
 class PieceLoader:
@@ -65,7 +65,7 @@ class PieceLoader:
 
         img = Img()
 
-        img.read(path)
+        img.read(path, size=(100, 100))
 
         img.img = ensure_alpha(img.img)#הוספת שקיפות
 

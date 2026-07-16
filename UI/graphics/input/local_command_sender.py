@@ -1,5 +1,7 @@
 #מתרגמת פקודה לקריאה למנוע
 #כדי שהעכבר לא יכיר את GameEngine.
+from UI.graphics.input.commands import ClickCommand, JumpCommand
+
 class LocalCommandSender:
 
     def __init__(

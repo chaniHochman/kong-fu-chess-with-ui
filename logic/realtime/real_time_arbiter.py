@@ -1,5 +1,6 @@
 from logic.realtime.motion import Motion
 from logic.model.position import Position
+from logic.input.board_mapper import CELL_SIZE
 
 # ניהול זמן ותנועות
 class RealTimeArbiter:
@@ -28,7 +29,7 @@ class RealTimeArbiter:
             target,
             is_jump=is_jump
         )
-        piece.state = "jump" if is_jump else "move"
+        piece.state = "jumping" if is_jump else "moving"
         # מכניס לרשימת תנועות פעילות
         self._active_motions.append(motion)
         if self._piece_animator:

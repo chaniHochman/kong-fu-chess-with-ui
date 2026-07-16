@@ -1,9 +1,9 @@
 #טעינת board.png פעם אחת.
 from pathlib import Path
 
-from view.img import Img
-from view.geometry import BoardGeometry
-from view.image_utils import ensure_alpha
+from UI.graphics.img import Img
+from UI.graphics.board.board_geometry import BoardGeometry
+from UI.graphics.image_utils import ensure_alpha
 
 
 class BoardLoader:

@@ -1,11 +1,10 @@
-# זו אחת המחלקות החשובות ביותר.
 
 #מחלקה אחת שמחשבת את מיקום וגודל התאים.
 
 from dataclasses import dataclass
 
 import UI.graphics.config as config
-from model.position import Position 
+from logic.model.position import Position 
 
 
 @dataclass

@@ -22,7 +22,6 @@ class ScoreData:
         }
 
 
-
     def add_capture(self, piece):
         """
         Adds score after capturing a piece.
@@ -49,11 +48,9 @@ class ScoreData:
             self._scores["white"] += value
 
 
-
     def get_score(self, color):
 
         return self._scores[color]
-
 
 
     def get_all_scores(self):

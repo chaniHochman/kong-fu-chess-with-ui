@@ -1,5 +1,5 @@
 #ציור הכלים במיקומים הנכונים לפי ה־Snapshot
-from view.img import Img
+from UI.graphics.img import Img
 
 
 class PieceRenderer:
@@ -25,13 +25,17 @@ class PieceRenderer:
         """
 
 
+        KIND_MAP = {"king": "K", "queen": "Q", "rook": "R", "bishop": "B", "knight": "N", "pawn": "P"}
+        COLOR_MAP = {"white": "W", "black": "B"}
+        STATE_MAP = {"idle": "idle", "moving": "move", "jumping": "jump", "captured": "idle"}
+
         for piece in snapshot.pieces:
 
 
             sprite = self._animation_library.get_frame(
-                piece.kind,
-                piece.color,
-                piece.state
+                KIND_MAP.get(piece.kind, piece.kind),
+                COLOR_MAP.get(piece.color, piece.color),
+                STATE_MAP.get(piece.state, piece.state)
                 )
 
 

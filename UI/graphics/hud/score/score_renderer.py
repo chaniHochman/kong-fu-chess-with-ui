@@ -1,4 +1,4 @@
-from view.protocols import Renderer
+from UI.graphics.protocols import Renderer
 
 
 
@@ -19,8 +19,6 @@ class ScoreRenderer:
 
         self._x = x
         self._y = y
-
-
 
     def render(
             self,

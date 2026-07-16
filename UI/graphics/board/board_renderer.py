@@ -3,9 +3,8 @@
 # איפה הכלי?
 #ואז PieceRenderer מצייר אותו.
 
-from view.img import Img
-
-from view.protocols import Renderer
+from UI.graphics.img import Img
+from UI.graphics.protocols import Renderer
 #בעתיד ניתן להוסיף ציורים על הלוח.
 
 class BoardRenderer(Renderer):

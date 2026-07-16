@@ -1,5 +1,5 @@
 from typing import Protocol
-from view.img import Img
+from UI.graphics.img import Img
 
 #חוזה לכל מחלקה שאחראית על ציור למסך
 class Renderer(Protocol):

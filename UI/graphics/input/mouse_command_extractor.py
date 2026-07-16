@@ -1,5 +1,5 @@
 #מקבלת פיקסל ומחזירה מיקום
-from view.input.commands import (
+from UI.graphics.input.commands import (
     ClickCommand,
     JumpCommand
 )

@@ -70,9 +70,7 @@ class PieceAnimator:
         Returns current pixel position.
         """
 
-
         motion = self._motions.get(piece_id)
-
 
         if motion is None:
             return None
@@ -84,7 +82,6 @@ class PieceAnimator:
             /
             motion["duration"]
         )
-
 
         x = (
             motion["start_x"]

@@ -48,7 +48,12 @@ class GameEngine:
     # מקדם זמן מדומה
     def wait(self, ms):
         self._real_time_arbiter.advance_time(ms)
-
+    def request_jump(self, position):
+        piece = self._board.get_piece(position)
+        if piece is None or piece.state != "idle":
+            return MoveResult(False, "piece_busy")
+        self._real_time_arbiter.start_motion(piece, (position.row, position.col), (position.row, position.col))
+        return MoveResult(True, "ok")
     # נקרא כאשר המלך נאסר
     def notify_king_captured(self):
         self._game_over = True

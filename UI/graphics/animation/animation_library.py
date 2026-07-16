@@ -1,6 +1,6 @@
 
 from pathlib import Path
-from view.pieces.piece_loader import PieceLoader
+from UI.graphics.pieces.piece_loader import PieceLoader
 
 #עבור כל כלי שומר :סוג, צבע, מצב, ורשימת תמונות
 class AnimationLibrary:
