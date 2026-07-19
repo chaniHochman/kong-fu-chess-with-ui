@@ -7,7 +7,7 @@ class Piece:
     _used_ids = set()
     _valid_colors = {"white", "black"}
     _valid_kinds = {"king", "queen", "rook", "bishop", "knight", "pawn"}
-    _valid_states = {"idle", "moving", "jumping", "captured"}
+    _valid_states = { "idle","move","jump","short_rest","long_rest"}
 
     def __init__(self, id: int, color: str, kind: str, cell: Position, state: str = "idle"):
         """יוצר כלי חדש ומאמת שהנתונים תקינים ושהמזהה ייחודי."""
@@ -17,7 +17,7 @@ class Piece:
         self._validate_cell(cell)
         self._validate_state(state)
 
-        self.id = id
+        self.piece_id = id
         self.color = color
         self.kind = kind
         self.cell = cell

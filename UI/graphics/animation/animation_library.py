@@ -1,7 +1,7 @@
 
 from pathlib import Path
 from UI.graphics.pieces.piece_loader import PieceLoader
-
+import json
 #עבור כל כלי שומר :סוג, צבע, מצב, ורשימת תמונות
 class AnimationLibrary:
     
@@ -18,7 +18,7 @@ class AnimationLibrary:
         self._piece_loader = piece_loader
 
         self._animations = {} #תמונות לאנימציות
-
+        
     def load_animation(
             self,
             kind,
@@ -42,9 +42,23 @@ class AnimationLibrary:
             for i in range(frames_count)
         ]
 
-        self._animations[key] = frames
+        #self._animations[key] = frames
+############################
+    # טעינת config של המצב
+        config = self._piece_loader.load_config(
+            kind,
+            color,
+            state
+        )
 
-
+###################################33
+    # שמירת הכל בזיכרון
+        self._animations[key] = {
+            "frames": frames,
+            "fps": config["graphics"]["frames_per_sec"],
+            "loop": config["graphics"]["is_loop"],
+            "next_state": config["physics"]["next_state_when_finished"]
+        }
 
     def get_frame(
             self,
@@ -65,15 +79,79 @@ class AnimationLibrary:
         )
 
 
-        frames = self._animations.get(key)
+        animation  = self._animations.get(key)
 
 
-        if frames is None:
+        if animation  is None:
             raise ValueError(
                 "Animation was not loaded"
             )
-
+        frames = animation["frames"]
 
         return frames[
             frame_index % len(frames)
         ]
+    ###########
+    def count_frames(
+            self,
+            kind,
+            color,
+            state
+        ):
+
+        key = (
+            kind,
+            color,
+            state
+        )
+
+        animation = self._animations.get(key)
+
+        if animation is None:
+            return 1
+
+        frames = animation["frames"]
+
+        return len(frames)
+    
+
+
+
+
+
+
+###########################
+
+    def get_fps(
+        self,
+        kind,
+        color,
+        state
+    ):
+        key = (kind, color, state)
+
+        return self._animations[key]["fps"]
+
+
+
+    def is_loop(
+            self,
+            kind,
+            color,
+            state
+    ):
+        key = (kind, color, state)
+
+        return self._animations[key]["loop"]
+
+
+
+    def get_next_state(
+            self,
+            kind,
+            color,
+            state
+    ):
+        key = (kind, color, state)
+
+        return self._animations[key]["next_state"]

@@ -77,7 +77,7 @@ class GameEngine:
 
                 pixel_y = row * CELL_SIZE
 
-                snapshot_piece = PieceSnapshot(id(piece),piece.kind,piece.color,pixel_x,pixel_y,piece.state,None)
+                snapshot_piece = PieceSnapshot(piece.piece_id,piece.kind,piece.color,pixel_x,pixel_y,piece.state,None)
 
                 pieces.append(snapshot_piece)
 

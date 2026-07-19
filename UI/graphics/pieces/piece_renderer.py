@@ -32,18 +32,48 @@ class PieceRenderer:
         for piece in snapshot.pieces:
 
 
+            
+            kind=KIND_MAP.get(piece.kind, piece.kind)
+            color=COLOR_MAP.get(piece.color, piece.color)
+            state=STATE_MAP.get(piece.state, piece.state)
+            
+
+            frames_count = self._animation_library.count_frames(
+                kind,
+                color,
+                state
+            )
+          
+
+              ######
+            fps = self._animation_library.get_fps(
+                kind,
+                color,
+                state
+            )
+            loop = self._animation_library.is_loop(
+                kind,
+                color,
+                state
+            )
+            ############
+            frame_index = self._piece_animator.get_frame_index(
+                piece.piece_id,
+                frames_count,
+                fps,
+                loop
+            )
+            ##############
             sprite = self._animation_library.get_frame(
-                KIND_MAP.get(piece.kind, piece.kind),
-                COLOR_MAP.get(piece.color, piece.color),
-                STATE_MAP.get(piece.state, piece.state)
+                kind,
+                color,
+                state,
+                frame_index
                 )
-
-
+            
             position = self._piece_animator.get_position(
                 piece.piece_id
                 )
-
-
             if position is not None:
 
                 x, y = position

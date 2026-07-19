@@ -8,6 +8,7 @@ class PieceAnimator:
     def __init__(self):
 
         self._motions = {}
+        self._time = 0
 
     def start_motion(
             self,
@@ -43,7 +44,7 @@ class PieceAnimator:
         Advances animation time.
         """
         finished = []
-
+        self._time += dt_ms
 
         for piece_id, motion in self._motions.items():
 
@@ -113,3 +114,33 @@ class PieceAnimator:
             int(x),
             int(y)
         )
+    ############33
+    # Returns the index of the current frame for a piece's animation based on elapsed time and frames per second.
+    def get_frame_index(self, piece_id, frames_count, fps,loop):
+
+        motion = self._motions.get(piece_id)
+
+        if motion is None:
+            frame_time = 1000 / fps
+
+            index = int(self._time / frame_time)
+
+            if loop:
+                return index % frames_count
+
+            return min(index, frames_count - 1)
+
+#no divid with zero
+        if fps <= 0:
+            return 0
+        
+        frame_time = 1000 / fps
+
+
+        index = int(
+            motion["elapsed"] / frame_time
+        )
+        if loop:
+            return index % frames_count
+
+        return min(index, frames_count - 1)

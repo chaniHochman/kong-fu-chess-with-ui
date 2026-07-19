@@ -5,7 +5,7 @@ from pathlib import Path
 from UI.graphics.img import Img
 from UI.graphics.image_utils import ensure_alpha
 
-
+import json
 class PieceLoader:
     """
     Loads chess piece images once and keeps them in memory.
@@ -103,3 +103,26 @@ class PieceLoader:
             /
             f"{frame}.png"
         )
+    
+    def load_config(
+        self,
+        kind,
+        color,
+        state
+    ):
+        folder = kind.upper() + color.upper()
+
+        config_path = (
+            self._assets_root
+            /
+            folder
+            /
+            "states"
+            /
+            state
+            /
+            "config.json"
+        )
+
+        with open(config_path, "r") as file:
+            return json.load(file)
