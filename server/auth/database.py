@@ -57,7 +57,7 @@ class Database:
                 password_hash,
                 rating
             )
-
+        #מכניס את הערכים שאח"כ במקום הסימני שאלה
             VALUES
             (
                 ?,

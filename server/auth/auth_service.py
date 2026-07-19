@@ -1,23 +1,73 @@
-#שומרת נתוני משתמש
+# המחלקה אחראית על כל הפעולות הקשורות למשתמשים:
 
-class User:
+# הרשמת משתמש חדש.
+# התחברות.
+# בדיקה האם המשתמש כבר קיים.
+# טעינת נתוני המשתמש.
+
+# היא לא פונה ישירות ל־TCP Server, אלא עובדת מול ה־Database ומפרסמת תוצאות ל־MessageBus.
+
+from server.auth.user import User
+
+
+class AuthService:
     """
-    Represents one registered player.
+    Handles user registration
+    and login operations.
     """
 
-    # Create a new user object.
-    def __init__(
+    # Initialize authentication service.
+    def __init__(self, database):
+
+        self.database = database
+
+
+    # Register a new user.
+    def register(
         self,
-        user_id,
         username,
-        password_hash,
-        rating=1200
+        password_hash
     ):
 
-        self.user_id = user_id
+        user = self.database.find_user(
+            username
+        )
+        #if username exsist
+        if user is not None:
 
-        self.username = username
+            return False
+        
+        #add to database
+        self.database.add_user(
+            username,
+            password_hash
+        )
 
-        self.password_hash = password_hash
+        return True
 
-        self.rating = rating
+
+    # Authenticate an existing user.
+    def login(
+        self,
+        username,
+        password_hash
+    ):
+
+        user = self.database.find_user(
+            username
+        )
+
+        if user is None:
+
+            return None
+
+        if user[2] != password_hash:
+
+            return None
+
+        return User(
+            user[0],
+            user[1],
+            user[2],
+            user[3]
+        )
