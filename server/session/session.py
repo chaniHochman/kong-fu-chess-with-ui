@@ -5,22 +5,29 @@
 # האם הוא מחובר
 # באיזה חדר הוא נמצא
 
-
+#מחלקה זו מייצגת משתמש רק בזמן שהוא מחובר 
 class Session:
     """
-    Represents one connected client session.
+    Represents one connected client.
+
+    Stores temporary information
+    about an online player.
     """
 
-    # Create a new session.
+
+    # Create a new client session.
     def __init__(
         self,
+        user,
         client_socket
     ):
 
+        self.user = user
+
         self.client_socket = client_socket
 
-        self.user = None
-
         self.room = None
+
+        self.game = None
 
         self.connected = True

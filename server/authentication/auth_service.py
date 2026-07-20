@@ -125,18 +125,14 @@ class AuthService:
 
             return None
 
-
-
         stored_hash = user[1]
 
         #המר סיסמה לגיבוב מאובטח
         password_hash = (
             self.hash_password(
-                password
+                password 
             )
         )
-
-
 
         if password_hash != stored_hash:
 
@@ -151,8 +147,6 @@ class AuthService:
             )
 
             return None
-
-
 
         logged_user = User(
             user[0],
@@ -171,10 +165,7 @@ class AuthService:
             )
         )
 
-
         return logged_user
-
-
 
     # Create password hash.
     def hash_password(

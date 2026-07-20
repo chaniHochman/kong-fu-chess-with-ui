@@ -1,53 +1,58 @@
 # מנהלת את כל ה־Sessions הפעילים.
 
 
-from server.session.session import Session
-
-
 class SessionManager:
     """
-    Manages connected client sessions.
+    Manages all connected client sessions.
     """
 
-    # Initialize session manager.
+
+    # Initialize session storage.
     def __init__(self):
 
         self.sessions = {}
 
-    # Create a session for a new client.
-    def create_session(
+    # Add a new session.
+    def add_session(
         self,
-        client_socket
+        session
     ):
 
-        session = Session(
-            client_socket
+        username = (
+            session.user.username
         )
 
         self.sessions[
-            client_socket
+            username
         ] = session
 
-        return session
-
-    # Find session by client socket.
+    # Find session by username.
     def get_session(
         self,
-        client_socket
+        username
     ):
 
         return self.sessions.get(
-            client_socket
+            username
         )
 
     # Remove disconnected session.
     def remove_session(
         self,
-        client_socket
+        username
     ):
 
-        if client_socket in self.sessions:
+        if username in self.sessions:
 
             del self.sessions[
-                client_socket
+                username
             ]
+
+    # Return all active sessions.
+    def get_all_sessions(
+        self
+    ):
+
+        return list(
+            self.sessions.values()
+        )
