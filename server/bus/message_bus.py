@@ -1,45 +1,73 @@
-# זה ערוץ התקשורת הפנימי של השרת.
-# שמחלקות לא ידברו ישירות אחת עם השנייה.
-
 class MessageBus:
     """
-    Implements Publish/Subscribe
-    message bus.
+    Implements internal server
+    Publish / Subscribe communication.
+
+    Publishers send events.
+    Subscribers receive events
+    they registered for.
     """
 
+
+    # Initialize message bus.
     def __init__(self):
-        """
-        Initialize subscribers list.
-        """
 
-        self.subscribers = {}
+        self.subscribers = {}  #איזה פונקציות מאזינות לאיזה אירוע.
 
 
 
-    def subscribe(self, event_type, handler):
-        """
-        Register handler
-        for specific event type.
-        """
+    # Register a handler for a specific event type.
+    def subscribe(
+        self,
+        event_type,
+        handler
+    ):
 
         if event_type not in self.subscribers:
 
             self.subscribers[event_type] = []
 
-        self.subscribers[event_type].append(handler)
+
+        # Prevent duplicate registration.
+        if handler not in self.subscribers[event_type]:
+
+            self.subscribers[event_type].append(
+                handler
+            )
+
+
+    #כשהשחקן יוצא
+    # Remove a handler from a specific event type.
+    def unsubscribe(
+        self,
+        event_type,
+        handler
+    ):
+
+        if event_type not in self.subscribers:
+
+            return
+
+
+        if handler in self.subscribers[event_type]:
+
+            self.subscribers[event_type].remove(
+                handler
+            )
 
 
 
-    def publish(self, event):
-        """
-        Publish event
-        to all subscribers.
-        """
+    # Publish an event to all registered subscribers.
+    def publish(
+        self,
+        event
+    ):
 
         handlers = self.subscribers.get(
             event.type,
             []
         )
+
 
         for handler in handlers:
 

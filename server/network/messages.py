@@ -2,6 +2,7 @@
 
 # Client
 # Server
+# מייצגת הודעה אחידה בין הלקוח לשרת (סוג הודעה + נתונים).
 import json
 
 class Message:
@@ -9,8 +10,6 @@ class Message:
     Represents a message
     exchanged between client and server.
     """
-
-
 
     def __init__(self, message_type, payload):
 
@@ -36,8 +35,6 @@ class Message:
         Convert message object
         into JSON format.
         """
-
-
         return json.dumps(
             {
                 "type": self.type,
@@ -55,8 +52,6 @@ class Message:
         Create Message object
         from JSON string.
         """
-
-
         obj = json.loads(data)
 
 

@@ -1,30 +1,28 @@
+# פתיחת השרת.
+# המתנה ללקוחות.
+# קבלת חיבורים.
+# שליחת הודעות.
+
 import socket
 import threading
 
 class TCPServer:
-    """
-    מנהל את תקשורת הרשת
-    בין השרת לשחקנים.
-    """
+    
     def __init__(self, bus):
-
-        """
-        מקבל MessageBus
-        שאליו יעברו ההודעות.
-        """
 
         self.bus = bus
 
         self.clients = []
 
+    
     def start(self):
         """
         מפעיל את השרת.
         """
 
         server_socket = socket.socket(
-            socket.AF_INET,
-            socket.SOCK_STREAM
+            socket.AF_INET,  #נשתמש בכתובות IPv4.
+            socket.SOCK_STREAM  #נשתמש בפרוטוקול TCP.
         )
 
         server_socket.bind(
@@ -43,7 +41,11 @@ class TCPServer:
             client, address = (
                 server_socket.accept()
             )
-
+            
+            # session = session_manager.create_session(
+            #     client_socket
+            # )
+            
             print(
                 "New client:",
                 address
@@ -74,7 +76,7 @@ class TCPServer:
 
         while True:
 
-
+            #קבל עד 1024 בתים מהחיבור
             message = client.recv(
                 1024
             )
@@ -82,7 +84,7 @@ class TCPServer:
             if not message:
                 break
 
-            text = message.decode()
+            text = message.decode() #מחזיר למחרוזת רגילה
 
 
             event = {

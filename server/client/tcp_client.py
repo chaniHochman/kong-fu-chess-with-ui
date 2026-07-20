@@ -1,3 +1,7 @@
+#  להתחבר לשרת.
+# לשלוח הודעות.
+#  לקבל הודעות.
+
 import json
 import socket
 
@@ -21,7 +25,7 @@ class TCPClient:
 
     # Connect to the game server.
     def connect(self):
-
+        #create a socket and connect to the server
         self.socket.connect(
             (
                 self.host,

@@ -1,22 +1,123 @@
 #מעדכנת דירוג ELO
+#לעבור על קובץ זה ולחשב בצורה נכונה
 class ScoreService:
     """
-    Updates player ratings.
+    Calculates and updates ELO ratings.
     """
 
-    def __init__(self):
-        """
-        Initialize score service.
-        """
-        pass
+
+    # Initialize score service.
+    def __init__(
+        self,
+        bus,
+        database
+    ):
+
+        self.bus = bus
+
+        self.database = database
+
+        self.register_events()
 
 
-    def handle_event(self, event):
-        """
-        Update ratings
-        after game ends.
-        """
 
-        if event.type == EventType.GAME_ENDED:
+    # Subscribe to game end event.
+    def register_events(self):
 
-            print("Updating ELO...")
+        self.bus.subscribe(
+            "GAME_ENDED",
+            self.update_rating
+        )
+
+
+
+    # Update player ratings after game.
+    def update_rating(
+        self,
+        event
+    ):
+
+        winner = event.payload["winner"]
+
+        loser = event.payload["loser"]
+
+
+        winner_rating = (
+            self.database.get_rating(
+                winner
+            )
+        )
+
+
+        loser_rating = (
+            self.database.get_rating(
+                loser
+            )
+        )
+
+
+        new_winner = self.calculate_elo(
+            winner_rating,
+            loser_rating,
+            True
+        )
+
+
+        new_loser = self.calculate_elo(
+            loser_rating,
+            winner_rating,
+            False
+        )
+
+
+        self.database.update_rating(
+            winner,
+            new_winner
+        )
+
+
+        self.database.update_rating(
+            loser,
+            new_loser
+        )
+
+
+
+    # Calculate new ELO rating.
+    def calculate_elo(
+        self,
+        player_rating,
+        opponent_rating,
+        win
+    ):
+
+        expected = (
+            1 /
+            (
+                1 +
+                10 **
+                (
+                    (opponent_rating -
+                    player_rating)
+                    /
+                    400
+                )
+            )
+        )
+
+
+        result = 1 if win else 0
+
+
+        new_rating = (
+            player_rating
+            +
+            32 *
+            (
+                result -
+                expected
+            )
+        )
+
+
+        return int(new_rating)

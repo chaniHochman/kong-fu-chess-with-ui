@@ -1,21 +1,13 @@
-# תפקיד המחלקה
 
 # מקשרת בין:
-
 # WebSocket
-
 # לבין:
-
 # MessageBus
-
 # היא מתרגמת:
-
 # הודעה מהלקוח
-
 # ↓
-
 # אירוע פנימי
-
+# ממיר הודעות רשת לאירועים פנימיים של השרת.
 from common.events import Event, EventType
 
 
@@ -26,16 +18,11 @@ class MessageHandler:
     into internal server events.
     """
 
-
-
     def __init__(self, bus):
-
         """
         Store MessageBus reference.
         """
-
         self.bus = bus
-
 
 
     def handle_message(self, message):
@@ -45,9 +32,7 @@ class MessageHandler:
         into Event object.
         """
 
-
         if message["type"] == "MOVE":
-
 
             event = Event(
 
