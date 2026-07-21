@@ -104,3 +104,18 @@ class Img:
 
     def height(self):
         return self.img.shape[0]
+    
+    @classmethod
+    def create_blank(cls, width, height, channels=4):
+        """
+        Creates an empty image that can be used as a drawing canvas.
+        """
+
+        new = cls()
+
+        new.img = np.zeros(
+            (height, width, channels),
+            dtype=np.uint8
+        )
+
+        return new

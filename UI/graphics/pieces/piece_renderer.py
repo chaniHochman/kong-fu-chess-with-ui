@@ -1,6 +1,6 @@
 #ציור הכלים במיקומים הנכונים לפי ה־Snapshot
 from UI.graphics.img import Img
-
+import cv2
 
 class PieceRenderer:
     """
@@ -8,11 +8,13 @@ class PieceRenderer:
     """
     def __init__(self,
             animation_library,
-            piece_animator
+            piece_animator,
+            geometry
             ):
 
         self._animation_library = animation_library
         self._piece_animator = piece_animator
+        self._geometry = geometry
 
 
     def render(
@@ -57,10 +59,8 @@ class PieceRenderer:
                 state
             )
             ############
-            piece_id = getattr(piece, "piece_id", getattr(piece, "id", None))
-
             frame_index = self._piece_animator.get_frame_index(
-                piece_id,
+                piece.piece_id,
                 frames_count,
                 fps,
                 loop
@@ -74,7 +74,7 @@ class PieceRenderer:
                 )
             
             position = self._piece_animator.get_position(
-                piece_id
+                piece.piece_id
                 )
             if position is not None:
 
@@ -85,7 +85,27 @@ class PieceRenderer:
                 x = piece.pixel_x
                 y = piece.pixel_y
 
-
+            #שינוי גודל התמונה של הכלי לפי גודל התא
+            sprite.img = cv2.resize(
+                sprite.img,
+                (
+                    self._geometry.cell_width,
+                    self._geometry.cell_height
+                )
+            )
+        # print(
+        #     "piece:",
+        #     piece.piece_id,
+        #     "position:",
+        #     x,
+        #     y,
+        #     "sprite:",
+        #     sprite.width(),
+        #     sprite.height(),
+        #     "canvas:",
+        #     canvas.width(),
+        #     canvas.height()
+        # )
             sprite.draw_on(
                 canvas,
                 x,

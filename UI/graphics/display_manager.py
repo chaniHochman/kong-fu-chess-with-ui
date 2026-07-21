@@ -48,7 +48,20 @@ class DisplayManager:
     #build one frame
     def render(self):
 
-        canvas = self._board_loader.get_image().copy()
+        board = self._board_loader.get_image()
+
+        hud_width = 350
+
+        canvas = Img.create_blank(
+            width=board.width() + hud_width,
+            height=board.height()
+        )
+
+        board.draw_on(
+            canvas,
+            0,
+            0
+        )
 
         snapshot = self._game_engine.create_snapshot()
    

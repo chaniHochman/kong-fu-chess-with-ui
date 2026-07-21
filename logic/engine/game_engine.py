@@ -1,16 +1,19 @@
 from logic.model.move_result import MoveResult
 from logic.rules.rule_engine import RuleEngine
 from logic.model.position import Position
-from logic.input.board_mapper import CELL_SIZE
 from logic.model.game_snapshot import GameSnapshot, PieceSnapshot
+from logic.input.board_mapper import CELL_SIZE
 # מנהל לוגיקה של משחק: מקבל מצב לוח, בודק מהלכים ומפעיל תנועות
 class GameEngine:
     # יוזם את המנוע עם אובייקט לוח, מנוע חוק וארביטר לזמן
-    def __init__(self, board, rule_engine: RuleEngine, real_time_arbiter):
+    def __init__(self, board, rule_engine: RuleEngine, real_time_arbiter,score_data,moves_log):
         self._board = board
         self._rule_engine = rule_engine
         self._real_time_arbiter = real_time_arbiter
         self._game_over = False
+        self._score_data = score_data
+        self._moves_log = moves_log
+      
 
     # מחזיר האם המשחק נגמר
     def is_game_over(self):
@@ -88,3 +91,19 @@ class GameEngine:
             selected_cell=None,
             game_over=self._game_over
             )
+    
+    def add_move(
+        self,
+        piece,
+        source,
+        destination
+    ):
+        self._moves_log.add_move(
+            piece,
+            source,
+            destination
+        )
+
+    def add_capture(self, piece):
+
+        self._score_data.add_capture(piece)

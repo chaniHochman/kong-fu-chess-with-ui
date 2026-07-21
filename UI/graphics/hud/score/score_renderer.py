@@ -11,8 +11,8 @@ class ScoreRenderer:
     def __init__(
             self,
             score_data,
-            x=20,
-            y=30
+            x=700,
+            y=80
     ):
 
         self._score_data = score_data

@@ -12,8 +12,8 @@ class MovesLogRenderer:
         moves = self._moves_log.get_moves()
         
         #place:
-        x = 450
-        y = 30
+        x = 700
+        y = 200
 
         max_moves = 10 #show only 10 noves
 

@@ -107,7 +107,10 @@ class RealTimeArbiter:
         if captured is not None and getattr(captured, "kind", None) == "king":
             if self._game_engine:
                 self._game_engine.notify_king_captured()
-
+        #הוספת ניקוד למי שתפס את הכלי
+        if self._game_engine is not None:
+            self._game_engine.add_capture(captured)
+        
         # 3. הסרת הכלי שביעד (אם קיים) ואז הצבת הכלי במיקום היעד
         if captured is not None:
             self._board.remove_piece(tgt_pos)
@@ -127,6 +130,14 @@ class RealTimeArbiter:
                 piece.kind = "queen"
             if piece.color == "black" and tgt_pos.row == self._board.rows - 1:
                 piece.kind = "queen"
+
+        if self._game_engine is not None:
+            self._game_engine.add_move(
+                piece,
+                src_pos,
+                tgt_pos
+            )
+        
     def set_game_engine(self, game_engine):
         """
         Connects the game engine after initialization.

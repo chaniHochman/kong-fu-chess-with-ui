@@ -33,7 +33,17 @@ from UI.graphics.pieces.piece_loader import PieceLoader
 
 from UI.graphics.input.mouse_command_extractor import MouseCommandExtractor
 from UI.graphics.input.local_command_sender import LocalCommandSender
+from UI.graphics.hud.score.score_data import ScoreData
+from UI.graphics.hud.score.score_renderer import ScoreRenderer
 
+
+from UI.graphics.hud.moves.moves_log_renderer import MovesLogRenderer
+from UI.graphics.hud.moves.moves_log_data import MovesLogData
+score_data = ScoreData()
+score_renderer = ScoreRenderer(score_data)
+
+moves_log = MovesLogData()
+moves_renderer = MovesLogRenderer(moves_log)
 
 
 def build_game():
@@ -74,16 +84,21 @@ def build_game():
     engine = GameEngine(
         board,
         rule_engine,
-        arbiter
+        arbiter,
+        score_data,
+        moves_log
     )
 
 
     arbiter.set_game_engine(engine)
 
+    # View
+
+    geometry = BoardGeometry()
 
     mapper = BoardMapper(
-        board.rows,
-        board.cols
+        geometry.rows,
+        geometry.cols
     )
 
     controller = Controller(
@@ -91,9 +106,6 @@ def build_game():
         mapper
     )
 
-    # View
-
-    geometry = BoardGeometry()
 
 
     mouse_extractor = MouseCommandExtractor(
@@ -102,8 +114,7 @@ def build_game():
     )
 
     command_sender = LocalCommandSender(
-        controller,
-        engine
+        controller
     )
 
 
@@ -125,7 +136,8 @@ def build_game():
 
     piece_renderer = PieceRenderer(
         animation_library,
-        piece_animator
+        piece_animator,
+        geometry
     )
 
 
@@ -133,10 +145,7 @@ def build_game():
     board_loader = BoardLoader(Path("UI/assets/board.png"), geometry)
     board_loader.load()
 
-
     board_renderer = BoardRenderer(board_loader)
-
-
 
     display = DisplayManager(
 
@@ -150,9 +159,9 @@ def build_game():
 
         piece_animator,
 
-        None,
-
-        None,
+        score_renderer,
+        
+        moves_renderer,
 
         mouse_extractor,
 

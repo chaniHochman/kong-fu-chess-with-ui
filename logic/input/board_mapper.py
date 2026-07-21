@@ -1,6 +1,7 @@
 from logic.model.position import Position
+from UI.graphics.board.board_geometry import BoardGeometry
 
-CELL_SIZE = 100
+CELL_SIZE = 75
 #ממיר בין פיקסלים לתאים (עמודה, שורה)
 class BoardMapper:
     # מאתחל את הממיר עם גודל הלוח כדי לדעת מתי קואורדינטה מחוץ לגבולות
