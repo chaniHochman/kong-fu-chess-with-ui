@@ -30,8 +30,12 @@ class Board:
     def remove_piece(self, position: Position):
         """מסיר כלי מהתא הנתון אם קיים."""
         self._validate_position(position)
+        piece = self._grid[position.row][position.col]
+
         self._grid[position.row][position.col] = None
 
+        return piece
+    
     def get_piece(self, position: Position):
         """מחזיר את הכלי שבתא הנתון, או None אם התא ריק."""
         self._validate_position(position)

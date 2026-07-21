@@ -1,6 +1,8 @@
 # תנועה (חלק כלי, מקו, יעד)
 class Motion:
     def __init__(self, piece, source, target, is_jump=False):
+        if piece is None:
+            raise ValueError("motion requires piece")
         self.piece = piece
         self.source = source
         self.target = target

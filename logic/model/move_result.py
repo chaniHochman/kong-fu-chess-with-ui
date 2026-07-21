@@ -3,9 +3,9 @@ class MoveResult:
         self.success = success
         self.reason = reason
 
-    # def __bool__(self):
+    def __bool__(self):
         
-    #     return self.success
+        return self.success
 
     # def __repr__(self):
     #     return f"MoveResult(success={self.success}, reason='{self.reason}')"

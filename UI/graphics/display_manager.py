@@ -94,8 +94,7 @@ class DisplayManager:
         cv2.namedWindow(self._window_name)
         cv2.setMouseCallback(self._window_name, self._mouse_callback)
         while not self._game_engine.is_game_over():
-            self._game_engine.wait(FRAME_DELAY_MS)
-            self._piece_animator.update(FRAME_DELAY_MS)
+            self.update()
             canvas = self.render()
             self.show_frame(canvas)
             key = cv2.waitKey(1)

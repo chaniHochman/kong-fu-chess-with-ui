@@ -75,7 +75,9 @@ class PieceAnimator:
 
         if motion is None:
             return None
-
+        
+        if motion["duration"] <=0:
+            return None
 
         #כמה אחוז מהתנועה כבר עבר
         progress = (
@@ -118,6 +120,10 @@ class PieceAnimator:
     # Returns the index of the current frame for a piece's animation based on elapsed time and frames per second.
     def get_frame_index(self, piece_id, frames_count, fps,loop):
 
+        #no divid with zero
+        if fps <= 0:
+            return 0
+        
         motion = self._motions.get(piece_id)
 
         if motion is None:
@@ -130,9 +136,7 @@ class PieceAnimator:
 
             return min(index, frames_count - 1)
 
-#no divid with zero
-        if fps <= 0:
-            return 0
+
         
         frame_time = 1000 / fps
 

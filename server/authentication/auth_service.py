@@ -52,7 +52,6 @@ class AuthService:
             )
         )
 
-
         if existing_user:
 
             self.bus.publish(

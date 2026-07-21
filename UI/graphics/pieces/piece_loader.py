@@ -62,6 +62,10 @@ class PieceLoader:
             frame
         )
 
+        if not path.exists():
+            raise FileNotFoundError(
+                f"Sprite not found: {path}"
+            )
 
         img = Img()
 

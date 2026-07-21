@@ -9,7 +9,7 @@ class BoardMapper:
         self._cols = cols
 
     # ממיר קואורדינטות פיקסל לתא לוח, מחזיר None אם הקליק מחוץ ללוח
-    def pixel_to_cell(self, x: int, y: int):
+    def pixel_to_cell(self, x: int, y: int)-> Position | None:
         """ממיר קואורדינטות פיקסל לPosition, או None אם מחוץ ללוח."""
         col = x // CELL_SIZE
         row = y // CELL_SIZE

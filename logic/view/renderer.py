@@ -29,7 +29,7 @@ class Renderer:
                 p.pixel_y == selected_cell.row * CELL_SIZE and
                 p.state == "idle"
             )
-            self._view.draw_piece(p.kind, p.color, p.pixel_x, p.pixel_y, highlight)
+            self._view.draw_piece(p.image, p.pixel_x, p.pixel_y, highlight)
 
     # מציג הודעת סיום משחק מעל הלוח
     def _draw_game_over(self):

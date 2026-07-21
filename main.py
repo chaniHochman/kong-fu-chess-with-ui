@@ -66,6 +66,7 @@ def build_game():
     
     arbiter = RealTimeArbiter(
         board,
+        game_engine=None,
         piece_animator=piece_animator
     )
 
@@ -77,7 +78,7 @@ def build_game():
     )
 
 
-    arbiter._game_engine = engine
+    arbiter.set_game_engine(engine)
 
 
     mapper = BoardMapper(

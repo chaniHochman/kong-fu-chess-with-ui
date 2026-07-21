@@ -27,7 +27,7 @@ class PieceRenderer:
 
         KIND_MAP = {"king": "K", "queen": "Q", "rook": "R", "bishop": "B", "knight": "N", "pawn": "P"}
         COLOR_MAP = {"white": "W", "black": "B"}
-        STATE_MAP = {"idle": "idle", "moving": "move", "jumping": "jump", "captured": "idle"}
+        STATE_MAP = {"idle": "idle", "move": "move", "jump": "jump","short_rest":"short_rest","long_rest":"long_rest", "captured": "idle"}
 
         for piece in snapshot.pieces:
 
@@ -57,8 +57,10 @@ class PieceRenderer:
                 state
             )
             ############
+            piece_id = getattr(piece, "piece_id", getattr(piece, "id", None))
+
             frame_index = self._piece_animator.get_frame_index(
-                piece.piece_id,
+                piece_id,
                 frames_count,
                 fps,
                 loop
@@ -72,7 +74,7 @@ class PieceRenderer:
                 )
             
             position = self._piece_animator.get_position(
-                piece.piece_id
+                piece_id
                 )
             if position is not None:
 

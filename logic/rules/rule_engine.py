@@ -16,7 +16,7 @@ class RuleEngine:
     def __init__(self, board):
         self.board = board
 
-    def validate_move(self, source: Position, destination: Position) -> MoveValidation:
+    def validate_move(self,source: Position, destination: Position) -> MoveValidation:
         """בודק אם מהלך מהתא source אל destination חוקי."""
         if not isinstance(source, Position):
             raise TypeError("source must be a Position")

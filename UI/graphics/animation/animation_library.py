@@ -37,6 +37,9 @@ class AnimationLibrary:
 
         frames_count = self._piece_loader.count_frames(kind, color, state)
 
+        if frames_count == 0:
+            return
+        
         frames = [
             self._piece_loader.load_piece(kind, color, state, i + 1)
             for i in range(frames_count)

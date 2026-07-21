@@ -35,7 +35,7 @@ class RealTimeArbiter:
         if self._piece_animator:
 
             self._piece_animator.start_motion(
-                piece.id,
+                piece.piece_id,
 
                 source[1] * CELL_SIZE,
                 source[0] * CELL_SIZE,
@@ -57,7 +57,8 @@ class RealTimeArbiter:
 
         for motion in finished:
             self._finish_motion(motion)#קריאה לפונקצית הוזזת חייל
-            self._active_motions.remove(motion)#הסרה מרשימת הפקודות
+            if motion in self._active_motions:
+                self._active_motions.remove(motion)#הסרה מרשימת הפקודות
 
     # מטפל בסיום קפיצה במקום: הכלי נותר באותו תא ונוחת חזרה
     def _finish_jump_motion(self, motion):
@@ -92,7 +93,7 @@ class RealTimeArbiter:
 
         # אם כלי זה מגיע ליעד שבו יש כלי קופץ של היריב, כלי זה נתפס במהלך הנחיתה
         captured = self._board.get_piece(tgt_pos)
-        if captured is not None and getattr(captured, "state", None) == "jumping" and captured.color != piece.color:
+        if captured is not None and getattr(captured, "state", None) == "jump" and captured.color != piece.color:
             self._board.remove_piece(src_pos)
             piece.state = "captured"
             if piece.kind == "king" and self._game_engine:
@@ -126,3 +127,8 @@ class RealTimeArbiter:
                 piece.kind = "queen"
             if piece.color == "black" and tgt_pos.row == self._board.rows - 1:
                 piece.kind = "queen"
+    def set_game_engine(self, game_engine):
+        """
+        Connects the game engine after initialization.
+        """
+        self._game_engine = game_engine     

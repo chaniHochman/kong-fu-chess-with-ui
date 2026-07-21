@@ -37,7 +37,7 @@ class GameEngine:
             return MoveResult(False, validation.reason)
 
         # אם חוקי — בקש מהארביטר להתחיל תנועה
-        piece = self._board.get_piece(source)
+        
         if piece is None:
             return MoveResult(False, "empty_source")
 

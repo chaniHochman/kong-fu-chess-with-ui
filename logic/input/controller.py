@@ -27,3 +27,7 @@ class Controller:
         self._selected = None
 
         return result
+    
+    def on_jump(self, position):
+
+        return self._game_engine.request_jump(position)

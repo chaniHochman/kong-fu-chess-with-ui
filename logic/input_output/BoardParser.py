@@ -66,7 +66,7 @@ class BoardParser:
                 color = color_map[cell[0]]
                 kind = kind_map[cell[1]]
                 pos = Position(r, c)
-                piece = Piece(id=next_id, color=color, kind=kind, cell=pos)
+                piece = Piece(piece_id=next_id, color=color, kind=kind, cell=pos)
                 next_id += 1
                 board.add_piece(piece, pos)
 

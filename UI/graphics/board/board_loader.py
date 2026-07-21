@@ -35,10 +35,12 @@ class BoardLoader:
                     self._geometry.window_height
                 )
             )
-            return self._board_image
-        # img.img = ensure_alpha(img.img)#תמונה עם שקיפות
 
-        # self._board_image = img
+            self._board_image.img = ensure_alpha(
+                self._board_image.img
+            )
+            return self._board_image
+        
 
 
 

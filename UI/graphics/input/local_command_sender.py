@@ -4,14 +4,9 @@ from UI.graphics.input.commands import ClickCommand, JumpCommand
 
 class LocalCommandSender:
 
-    def __init__(
-            self,
-            controller,
-            game_engine
-    ):
+    def __init__(self, controller, game_engine=None):
         self._controller = controller
         self._game_engine = game_engine
-
 
     def send(self, command):
 
@@ -23,6 +18,9 @@ class LocalCommandSender:
 
         elif isinstance(command, JumpCommand):
 
-            self._game_engine.request_jump(
-                command.position
-            )
+            if self._game_engine is not None:
+                self._game_engine.request_jump(command.position)
+            else:
+                self._controller.on_jump(
+                    command.position
+                )
