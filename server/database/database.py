@@ -31,7 +31,8 @@ class Database:
     ):
 
         self.connection = sqlite3.connect(
-            path
+            path,
+            check_same_thread=False
         )
 
         self.create_tables()
@@ -155,3 +156,28 @@ class Database:
 
 
         self.connection.commit()
+
+    def get_rating(self, username):
+        """
+        Return player rating.
+        """
+
+        cursor = self.connection.cursor()
+
+        cursor.execute(
+
+            """
+            SELECT rating
+            FROM users
+            WHERE username = ?
+            """,
+
+            (username,)
+        )
+
+        row = cursor.fetchone()
+
+        if row is None:
+            return None
+
+        return row[0]

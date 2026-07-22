@@ -1,79 +1,67 @@
 #מודיעה ללקוח איזו אנימציה להפעיל
+from bus.event import Event
+from bus.event_type import EventType
+
+
 class AnimationService:
     """
-    Sends animation commands
-    to clients.
+    Publishes animation events.
+
+    The service does not know the UI.
+
+    It only tells the client which animation should be played.
     """
 
-
-    # Initialize animation service.
-    def __init__(
-        self,
-        bus
-    ):
+    # Create animation service.
+    def __init__(self, bus):
 
         self.bus = bus
 
         self.register_events()
 
-
-
-    # Subscribe to animation events.
+    # Subscribe to game events.
     def register_events(self):
 
         self.bus.subscribe(
-            "GAME_STARTED",
+            EventType.GAME_STARTED,
             self.start_animation
         )
 
-
         self.bus.subscribe(
-            "GAME_ENDED",
+            EventType.GAME_FINISHED,
             self.end_animation
         )
 
-
-
-    # Send start animation command.
-    def start_animation(
-        self,
-        event
-    ):
-
-        animation_event = {
-
-            "type":
-            "START_ANIMATION",
-
-            "animation":
-            "game_start"
-
-        }
-
+    # Publish start animation.
+    def start_animation(self, event):
 
         self.bus.publish(
-            animation_event
+
+            Event(
+
+                EventType.PLAY_ANIMATION,
+
+                {
+                    "animation": "game_start"
+                }
+
+            )
+
         )
 
-
-
-    # Send end animation command.
-    def end_animation(
-        self,
-        event
-    ):
-
-        animation_event = {
-
-            "type":
-            "END_ANIMATION",
-
-            "animation":
-            "victory"
-
-        }
-
+    # Publish end animation.
+    def end_animation(self, event):
 
         self.bus.publish(
-            animation_event
+
+            Event(
+
+                EventType.PLAY_ANIMATION,
+
+                {
+                    "animation": "victory"
+                }
+
+            )
+
         )

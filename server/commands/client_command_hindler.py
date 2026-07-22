@@ -1,7 +1,20 @@
 # הוא רק מתרגם הודעה → Event.
+#
+# הוא לא מכיל לוגיקה של:
+# משתמשים
+# חדרים
+# משחקים
+#
+# הוא מקבל הודעה מהלקוח
+# ומפרסם Event דרך MessageBus.
+
 
 from server.bus.event import Event
+
 from server.bus.event_type import EventType
+
+from common.message_type import MessageType
+
 
 
 class ClientCommandHandler:
@@ -13,15 +26,34 @@ class ClientCommandHandler:
     """
 
 
+
     # Creates command handler.
-    def __init__(self, bus):
+    def __init__(
+        self,
+        bus,
+        session_manager
+    ):
+        """
+        Initialize command handler.
+
+        Stores MessageBus and SessionManager.
+        """
 
         self._bus = bus
+
+        self._session_manager = session_manager
 
 
 
     # Handles client message event.
-    def handle(self, event):
+    def handle(
+        self,
+        event
+    ):
+        """
+        Receive client message
+        and convert it into server event.
+        """
 
         connection = event.data["connection"]
 
@@ -33,12 +65,14 @@ class ClientCommandHandler:
         payload = message.payload
 
 
+
         if message_type == MessageType.LOGIN:
 
             self._handle_login(
                 connection,
                 payload
             )
+
 
 
         elif message_type == MessageType.REGISTER:
@@ -48,22 +82,98 @@ class ClientCommandHandler:
                 payload
             )
 
+
+
+        elif message_type == MessageType.CREATE_ROOM:
+
+            self._handle_create_room(
+                connection
+            )
+
+
+
+        elif message_type == MessageType.JOIN_ROOM:
+
+            self._handle_join_room(
+                connection,
+                payload
+            )
+
+
+
+        elif message_type == MessageType.PLAY:
+
+            self._handle_play(
+                connection
+            )
+
+
+
+        elif message_type == MessageType.MOVE:
+
+            self._handle_move(
+                connection,
+                payload
+            )
+
+
+
+    # Find session by client connection.
+    def get_session(
+        self,
+        connection
+    ):
+        """
+        Return the active session
+        that belongs to this connection.
+        """
+
+        sessions = (
+            self._session_manager.get_all_sessions()
+        )
+
+
+        for session in sessions:
+
+            if session.connected == connection:
+
+                return session
+
+
+
+        return None
+
+
+
     # Creates login request event.
     def _handle_login(
         self,
         connection,
         payload
     ):
+        """
+        Publish login request.
+        """
+
 
         self._bus.publish(
+
             Event(
+
                 EventType.LOGIN_REQUEST,
+
                 {
                     "connection": connection,
-                    "username": payload["username"],
-                    "password": payload["password"]
+
+                    "username":
+                    payload["username"],
+
+                    "password":
+                    payload["password"]
                 }
+
             )
+
         )
 
 
@@ -74,16 +184,29 @@ class ClientCommandHandler:
         connection,
         payload
     ):
+        """
+        Publish register request.
+        """
+
 
         self._bus.publish(
+
             Event(
+
                 EventType.REGISTER_REQUEST,
+
                 {
                     "connection": connection,
-                    "username": payload["username"],
-                    "password": payload["password"]
+
+                    "username":
+                    payload["username"],
+
+                    "password":
+                    payload["password"]
                 }
+
             )
+
         )
 
 
@@ -93,14 +216,31 @@ class ClientCommandHandler:
         self,
         connection
     ):
+        """
+        Publish room creation request
+        with current session.
+        """
+
+
+        session = self.get_session(
+            connection
+        )
+
 
         self._bus.publish(
+
             Event(
+
                 EventType.CREATE_ROOM_REQUEST,
+
                 {
-                    "connection": connection
+                    "connection": connection,
+
+                    "session": session
                 }
+
             )
+
         )
 
 
@@ -111,15 +251,31 @@ class ClientCommandHandler:
         connection,
         payload
     ):
+        """
+        Publish join room request
+        with current session.
+        """
+        # session = self.get_session(
+        #     connection
+        # )
 
         self._bus.publish(
+
             Event(
-                EventType.JOIN_ROOM_REQUEST,
+
+                EventType.JOIN_ROOM_COMMAND,
+
                 {
                     "connection": connection,
-                    "room_id": payload["room_id"]
+
+                    # "session": session,
+
+                    "room_id":
+                    payload["room_id"]
                 }
+
             )
+
         )
 
 
@@ -130,15 +286,34 @@ class ClientCommandHandler:
         connection,
         payload
     ):
+        """
+        Publish move request.
+        """
+
+
+        session = self.get_session(
+            connection
+        )
+
+
 
         self._bus.publish(
+
             Event(
+
                 EventType.MOVE_REQUESTED,
+
                 {
                     "connection": connection,
-                    "move": payload["move"]
+
+                    "session": session,
+
+                    "move":
+                    payload["move"]
                 }
+
             )
+
         )
 
 
@@ -148,12 +323,29 @@ class ClientCommandHandler:
         self,
         connection
     ):
+        """
+        Publish matchmaking request.
+        """
+
+
+        session = self.get_session(
+            connection
+        )
+
+
 
         self._bus.publish(
+
             Event(
+
                 EventType.MATCH_REQUEST,
+
                 {
-                    "connection": connection
+                    "connection": connection,
+
+                    "session": session
                 }
+
             )
+
         )

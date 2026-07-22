@@ -51,3 +51,14 @@ class ServerGame:
     ):
 
         return self.finished
+
+        # Return current game state.
+    def get_snapshot(
+        self
+    ):
+        """
+        Return current snapshot
+        from game engine.
+        """
+
+        return self.game_engine.create_snapshot()

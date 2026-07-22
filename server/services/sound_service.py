@@ -1,76 +1,67 @@
 #מודיעה ללקוח איזה צליל לנגן
+from bus.event import Event
+from bus.event_type import EventType
+
+
 class SoundService:
     """
-    Sends sound commands
-    to clients.
+    Publishes sound events.
+
+    This service does not play sounds.
+
+    It only informs clients which sound should be played.
     """
 
-
-    # Initialize sound service.
-    def __init__(
-        self,
-        bus
-    ):
+    # Create sound service.
+    def __init__(self, bus):
 
         self.bus = bus
 
         self.register_events()
 
-
-
-    # Subscribe to sound events.
+    # Subscribe to game events.
     def register_events(self):
 
         self.bus.subscribe(
-            "MOVE_ACCEPTED",
+            EventType.MOVE_ACCEPTED,
             self.play_move_sound
         )
 
-
         self.bus.subscribe(
-            "GAME_ENDED",
+            EventType.GAME_FINISHED,
             self.play_end_sound
         )
 
-
-
-    # Create move sound event.
-    def play_move_sound(
-        self,
-        event
-    ):
-
-        sound_event = {
-            "type":
-            "PLAY_SOUND",
-
-            "sound":
-            "move.wav"
-        }
-
+    # Publish move sound.
+    def play_move_sound(self, event):
 
         self.bus.publish(
-            sound_event
+
+            Event(
+
+                EventType.PLAY_SOUND,
+
+                {
+                    "sound": "move.wav"
+                }
+
+            )
+
         )
 
-
-
-    # Create game end sound event.
-    def play_end_sound(
-        self,
-        event
-    ):
-
-        sound_event = {
-
-            "type":
-            "PLAY_SOUND",
-
-            "sound":
-            "victory.wav"
-        }
-
+    # Publish end game sound.
+    def play_end_sound(self, event):
 
         self.bus.publish(
-            sound_event
+
+            Event(
+
+                EventType.PLAY_SOUND,
+
+                {
+                    "sound": "victory.wav"
+                }
+
+            )
+
         )

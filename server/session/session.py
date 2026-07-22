@@ -19,12 +19,12 @@ class Session:
     def __init__(
         self,
         user,
-        client_socket
+        connection
     ):
 
         self.user = user
 
-        self.client_socket = client_socket
+        self.connection = connection
 
         self.room = None
 

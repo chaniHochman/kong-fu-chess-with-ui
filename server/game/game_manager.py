@@ -10,7 +10,7 @@ from bus.event import Event
 
 from bus.event_type import EventType
 
-
+from game.game_session import GameSession
 
 class GameManager:
     """
@@ -34,14 +34,21 @@ class GameManager:
         game_engine
     ):
 
-        game = ServerGame(
+        server_game = ServerGame(
             room,
             game_engine
         )
 
+
+        game_session = GameSession(
+            room,
+            server_game,
+            self.bus
+        )
+
         self.games[
             room.room_id
-        ] = game
+        ] = game_session
 
         self.bus.publish(
 

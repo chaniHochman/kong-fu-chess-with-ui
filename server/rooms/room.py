@@ -3,7 +3,7 @@
 # קביעת תפקיד.
 # בדיקה האם החדר מלא.
 import uuid
-
+from common.player import PlayerRole
 
 class Room:
     """
@@ -27,7 +27,7 @@ class Room:
 
         self.viewers = []
 
-
+        self.game_session = None
 
     # Add a session into the room.
     def add_session(
@@ -41,7 +41,7 @@ class Room:
 
             session.room = self
 
-            return "WHITE"
+            return PlayerRole.WHITE
 
 
         if self.black_player is None:
@@ -50,7 +50,7 @@ class Room:
 
             session.room = self
 
-            return "BLACK"
+            return PlayerRole.BLACK
 
 
         self.viewers.append(
@@ -59,7 +59,7 @@ class Room:
 
         session.room = self
 
-        return "VIEWER"
+        return PlayerRole.VIEWER
 
 
 
@@ -95,3 +95,20 @@ class Room:
             and
             self.black_player is not None
         )
+    # Return all sessions inside the room.
+    def get_all_sessions(self):
+        """
+        Return players and viewers in this room.
+        """
+
+        sessions = []
+
+        if self.white_player:
+            sessions.append(self.white_player)
+
+        if self.black_player:
+            sessions.append(self.black_player)
+
+        sessions.extend(self.viewers)
+
+        return sessions

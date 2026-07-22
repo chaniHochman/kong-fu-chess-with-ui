@@ -14,17 +14,21 @@ from bus.event import Event
 from bus.event_type import EventType
 
 
-
 class AuthService:
     """
-    Handles user registration
-    and login operations.
+    Handles user registration and login operations.
 
-    Communicates with Database
-    and publishes authentication
-    events through MessageBus.
+    Responsible only for:
+    - checking users
+    - creating users
+    - validating passwords
+
+    Communicates with:
+    - Database
+    - MessageBus
+
+    It does not handle network communication directly.
     """
-
 
     # Initialize authentication service.
     def __init__(
@@ -32,25 +36,102 @@ class AuthService:
         database,
         bus
     ):
+        """
+        Initialize authentication service.
+
+        Saves database and bus references,
+        then subscribes to authentication events.
+        """
 
         self.database = database
-
         self.bus = bus
 
+        self.register_events()
+
+
+    # Register authentication event handlers.
+    def register_events(self):
+        """
+        Subscribe login and register requests
+        to the MessageBus.
+        """
+
+        self.bus.subscribe(
+            EventType.LOGIN_REQUEST,
+            self.handle_login
+        )
+
+        self.bus.subscribe(
+            EventType.REGISTER_REQUEST,
+            self.handle_register
+        )
+
+
+    # Handle login request event.
+    def handle_login(
+        self,
+        event
+    ):
+        """
+        Receive login request from MessageBus
+        and call login logic.
+        """
+
+        connection = event.data["connection"]
+
+        username = event.data["username"]
+
+        password = event.data["password"]
+
+
+        self.login(
+            connection,
+            username,
+            password
+        )
+
+
+    # Handle register request event.
+    def handle_register(
+        self,
+        event
+    ):
+        """
+        Receive register request from MessageBus
+        and call registration logic.
+        """
+
+        connection = event.data["connection"]
+
+        username = event.data["username"]
+
+        password = event.data["password"]
+
+
+        self.register(
+            connection,
+            username,
+            password
+        )
 
 
     # Register a new user.
     def register(
         self,
+        connection,
         username,
         password
     ):
+        """
+        Create a new user.
 
-        existing_user = (
-            self.database.get_user(
-                username
-            )
-        )
+        Checks if username exists,
+        saves password hash,
+        and publishes result event.
+        """
+
+        existing_user = self.database.get_user(username)
+
 
         if existing_user:
 
@@ -58,8 +139,8 @@ class AuthService:
                 Event(
                     EventType.LOGIN_FAILED,
                     {
-                        "reason":
-                        "username_exists"
+                        "connection": connection,
+                        "reason": "username_exists"
                     }
                 )
             )
@@ -67,12 +148,7 @@ class AuthService:
             return False
 
 
-
-        password_hash = (
-            self.hash_password(
-                password
-            )
-        )
+        password_hash = self.hash_password(password)
 
 
         self.database.save_user(
@@ -80,13 +156,17 @@ class AuthService:
             password_hash
         )
 
-
+        new_user = User(
+            username,
+            password_hash,
+            1200
+        )
         self.bus.publish(
             Event(
                 EventType.LOGIN_SUCCESS,
                 {
-                    "username":
-                    username
+                    "connection": connection,
+                    "user": new_user
                 }
             )
         )
@@ -99,15 +179,18 @@ class AuthService:
     # Authenticate existing user.
     def login(
         self,
+        connection,
         username,
         password
     ):
+        """
+        Authenticate existing user.
 
-        user = (
-            self.database.get_user(
-                username
-            )
-        )
+        Checks username and password,
+        then publishes success or failure event.
+        """
+
+        user = self.database.get_user(username)
 
 
         if not user:
@@ -116,22 +199,21 @@ class AuthService:
                 Event(
                     EventType.LOGIN_FAILED,
                     {
-                        "reason":
-                        "user_not_found"
+                        "connection": connection,
+                        "reason": "user_not_found"
                     }
                 )
             )
 
             return None
 
-        stored_hash = user[1]
 
-        #המר סיסמה לגיבוב מאובטח
-        password_hash = (
-            self.hash_password(
-                password 
-            )
-        )
+
+        stored_hash = user[2]
+
+
+        password_hash = self.hash_password(password)
+
 
         if password_hash != stored_hash:
 
@@ -139,17 +221,19 @@ class AuthService:
                 Event(
                     EventType.LOGIN_FAILED,
                     {
-                        "reason":
-                        "wrong_password"
+                        "connection": connection,
+                        "reason": "wrong_password"
                     }
                 )
             )
 
             return None
 
+
+
         logged_user = User(
-            user[0],
             user[1],
+            user[2],
             user[3]
         )
 
@@ -158,19 +242,25 @@ class AuthService:
             Event(
                 EventType.LOGIN_SUCCESS,
                 {
-                    "username":
-                    username
+                    "connection": connection,
+                    "user": logged_user
                 }
             )
         )
 
+
         return logged_user
+
+
 
     # Create password hash.
     def hash_password(
         self,
         password
     ):
+        """
+        Convert plain password into secure hash.
+        """
 
         return hashlib.sha256(
             password.encode()
