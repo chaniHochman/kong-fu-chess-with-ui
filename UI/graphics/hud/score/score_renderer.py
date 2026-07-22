@@ -1,7 +1,3 @@
-from UI.graphics.protocols import Renderer
-
-
-
 class ScoreRenderer:
     """
     Draws scores on the screen.

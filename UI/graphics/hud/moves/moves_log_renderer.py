@@ -15,7 +15,7 @@ class MovesLogRenderer:
         x = 700
         y = 200
 
-        max_moves = 10 #show only 10 noves
+        max_moves = 20 #show only 20 moves
 
         recent_moves = moves[-max_moves:]
 

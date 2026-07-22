@@ -26,11 +26,8 @@ class ScoreData:
         """
         Adds score after capturing a piece.
         """
-
-
         if piece is None:
             return
-
 
         value = self.VALUES.get(
             piece.kind,

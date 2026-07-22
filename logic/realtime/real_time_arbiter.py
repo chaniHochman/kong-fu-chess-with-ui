@@ -94,10 +94,17 @@ class RealTimeArbiter:
         # אם כלי זה מגיע ליעד שבו יש כלי קופץ של היריב, כלי זה נתפס במהלך הנחיתה
         captured = self._board.get_piece(tgt_pos)
         if captured is not None and getattr(captured, "state", None) == "jump" and captured.color != piece.color:
+
             self._board.remove_piece(src_pos)
+            #add score
+            if self._game_engine is not None:
+                self._game_engine.add_capture(piece)
             piece.state = "captured"
+            
+
             if piece.kind == "king" and self._game_engine:
                 self._game_engine.notify_king_captured()
+        
             return
 
         # 1. הסרת הכלי מהמקור
@@ -108,7 +115,7 @@ class RealTimeArbiter:
             if self._game_engine:
                 self._game_engine.notify_king_captured()
         #הוספת ניקוד למי שתפס את הכלי
-        if self._game_engine is not None:
+        if captured is not None and self._game_engine is not None:
             self._game_engine.add_capture(captured)
         
         # 3. הסרת הכלי שביעד (אם קיים) ואז הצבת הכלי במיקום היעד

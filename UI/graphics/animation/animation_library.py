@@ -1,7 +1,7 @@
 
 from pathlib import Path
 from UI.graphics.pieces.piece_loader import PieceLoader
-import json
+
 #עבור כל כלי שומר :סוג, צבע, מצב, ורשימת תמונות
 class AnimationLibrary:
     
