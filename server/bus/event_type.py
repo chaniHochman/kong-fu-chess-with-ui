@@ -1,68 +1,34 @@
-#המחלקה מייצגת אירוע פנימי שעובר בתוך השרת.
-class EventType:
+from enum import Enum
+
+
+class EventType(Enum):
     """
-    Contains all internal server event types.
+    Defines all server events.
     """
 
-    PLAYER_CONNECTED = (
-        "PLAYER_CONNECTED"
-    )
 
-    PLAYER_DISCONNECTED = (
-        "PLAYER_DISCONNECTED"
-    )
-
-    LOGIN_SUCCESS = (
-        "LOGIN_SUCCESS"
-    )
-
-    LOGIN_FAILED = (
-        "LOGIN_FAILED"
-    )
-
-    GAME_STARTED = (
-        "GAME_STARTED"
-    )
-
-    GAME_ENDED = (
-        "GAME_ENDED"
-    )
-
-    MOVE_REQUESTED = (
-        "MOVE_REQUESTED"
-    )
-
-    MOVE_ACCEPTED = (
-        "MOVE_ACCEPTED"
-    )
-
-    MOVE_REJECTED = (
-        "MOVE_REJECTED"
-    )
-
-    BOARD_UPDATED = (
-        "BOARD_UPDATED"
-    )
-
-    PLAY_SOUND = (
-        "PLAY_SOUND"
-    )
-
-    START_ANIMATION = (
-        "START_ANIMATION"
-    )
-
-    END_ANIMATION = (
-        "END_ANIMATION"
-    )
-
-    ROOM_CREATED = "ROOM_CREATED"
+    CLIENT_MESSAGE = "client_message"
 
 
-    PLAYER_JOINED_ROOM = "PLAYER_JOINED_ROOM"
+    PLAYER_CONNECTED = "player_connected"
 
 
-    PLAYER_LEFT_ROOM = "PLAYER_LEFT_ROOM"
+    PLAYER_DISCONNECTED = "player_disconnected"
 
 
-    ROOM_REMOVED = "ROOM_REMOVED"
+    USER_LOGIN = "user_login"
+
+
+    ROOM_CREATED = "room_created"
+
+
+    PLAYER_JOINED_ROOM = "player_joined_room"
+
+
+    GAME_STARTED = "game_started"
+
+
+    GAME_MOVE = "game_move"
+
+
+    GAME_FINISHED = "game_finished"

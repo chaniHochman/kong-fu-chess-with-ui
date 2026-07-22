@@ -11,9 +11,9 @@ class Event:
     def __init__(
         self,
         event_type,
-        payload=None
+        data=None
     ):
 
         self.type = event_type
 
-        self.payload = payload  #מידע נוסף
+        self.data = data or {} #מידע נוסף

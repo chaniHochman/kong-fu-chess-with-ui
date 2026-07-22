@@ -1,4 +1,4 @@
-from tcp_client import TCPClient
+from UI.network.tcp_client import TCPClient
 import threading
 
 

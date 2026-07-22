@@ -7,28 +7,38 @@
 import sqlite3
 
 
-
 class Database:
     """
-    Handles SQLite database operations.
+    Responsible only for SQLite operations.
+
+    It knows:
+    - tables
+    - SQL queries
+    - saving data
+
+    It does not know:
+    - users logic
+    - authentication
+    - games
     """
 
 
-    # Initialize database connection.
+
+    # Open database connection.
     def __init__(
         self,
-        filename="game.db"
+        path="game.db"
     ):
 
         self.connection = sqlite3.connect(
-            filename
+            path
         )
 
         self.create_tables()
 
 
 
-    # Create database tables.
+    # Create all database tables.
     def create_tables(self):
 
         cursor = self.connection.cursor()
@@ -44,7 +54,7 @@ class Database:
 
                 password_hash TEXT,
 
-                rating INTEGER
+                rating INTEGER DEFAULT 1200
             )
             """
         )
@@ -52,7 +62,9 @@ class Database:
 
         self.connection.commit()
 
-    # Insert a new user into the database.
+
+
+    # Save a new user.
     def save_user(
         self,
         username,
@@ -66,26 +78,24 @@ class Database:
             INSERT INTO users
             (
                 username,
-                password_hash,
-                rating
+                password_hash
             )
-        #מכניס את הערכים שאח"כ במקום הסימני שאלה
+
             VALUES
             (
-                ?,
                 ?,
                 ?
             )
             """,
-
             (
                 username,
-                password_hash,
-                1200
+                password_hash
             )
         )
 
+
         self.connection.commit()
+
 
 
     # Find user by username.
@@ -96,34 +106,14 @@ class Database:
 
         cursor = self.connection.cursor()
 
-        cursor.execute(
-
-            """
-            SELECT *
-
-            FROM users
-
-            WHERE username = ?
-            """,
-
-            (username,)
-        )
-
-        return cursor.fetchone()
-    
-
-    # Get current player rating.
-    def get_rating(
-        self,
-        username
-    ):
-
-        cursor = self.connection.cursor()
-
 
         cursor.execute(
             """
-            SELECT rating
+            SELECT
+            id,
+            username,
+            password_hash,
+            rating
 
             FROM users
 
@@ -135,15 +125,7 @@ class Database:
         )
 
 
-        row = cursor.fetchone()
-
-
-        if row:
-
-            return row[0]
-
-
-        return None
+        return cursor.fetchone()
 
 
 
@@ -151,7 +133,7 @@ class Database:
     def update_rating(
         self,
         username,
-        new_rating
+        rating
     ):
 
         cursor = self.connection.cursor()
@@ -166,7 +148,7 @@ class Database:
             WHERE username = ?
             """,
             (
-                new_rating,
+                rating,
                 username
             )
         )

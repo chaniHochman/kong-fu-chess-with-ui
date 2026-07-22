@@ -150,7 +150,7 @@ class AuthService:
         logged_user = User(
             user[0],
             user[1],
-            user[2]
+            user[3]
         )
 
 

@@ -1,64 +1,96 @@
-# פתיחת השרת.
-# המתנה ללקוחות.
-# קבלת חיבורים.
-# שליחת הודעות.
-
+#  לפתוח שרת
+#  לקבל לקוח חדש
+#  ליצור ClientConnection
+#  להעביר הלאה
 import socket
 import threading
 
+from server.network.client_connection import ClientConnection
+from server.bus.event import Event
+from server.bus.event_type import EventType
+
+
+
 class TCPServer:
-    
-    def __init__(self, bus):
+    """
+    Responsible only for:
+    - accepting TCP connections
+    - creating ClientConnection
+    - publishing client messages
 
-        self.bus = bus
+    It does not know:
+    - users
+    - rooms
+    - games
+    """
 
-        self.clients = []
 
-    
+    def __init__(
+        self,
+        host,
+        port,
+        connection_manager,
+        bus
+    ):
+
+        self._host = host
+        self._port = port
+
+        self._connection_manager = connection_manager
+
+        self._bus = bus
+
+        self._server_socket = None
+
+        self._running = False
+
+
+
     def start(self):
-        """
-        מפעיל את השרת.
-        """
 
-        server_socket = socket.socket(
-            socket.AF_INET,  #נשתמש בכתובות IPv4.
-            socket.SOCK_STREAM  #נשתמש בפרוטוקול TCP.
-        )
-
-        server_socket.bind(
-            ("localhost", 5000)
-        )
-
-        server_socket.listen()
-
-        print(
-            "Server started"
+        self._server_socket = socket.socket(
+            socket.AF_INET,
+            socket.SOCK_STREAM
         )
 
 
-        while True:
-
-            client, address = (
-                server_socket.accept()
+        self._server_socket.bind(
+            (
+                self._host,
+                self._port
             )
-            
-            # session = session_manager.create_session(
-            #     client_socket
-            # )
-            
-            print(
-                "New client:",
-                address
+        )
+
+
+        self._server_socket.listen()
+
+        self._running = True
+
+
+        print("Server started")
+
+
+        while self._running:
+
+            client_socket, address = (
+                self._server_socket.accept()
             )
 
-            self.clients.append(client)
+
+            connection = ClientConnection(
+                client_socket
+            )
+
+
+            self._connection_manager.add(
+                connection
+            )
+
 
             thread = threading.Thread(
-
-                target=self.handle_client,
-
-                args=(client,)
-
+                target=self._handle_client,
+                args=(connection,),
+                daemon=True
             )
 
 
@@ -66,32 +98,48 @@ class TCPServer:
 
 
 
-    def handle_client(self, client):
-        """
-        מטפל בשחקן אחד.
+    def _handle_client(
+        self,
+        connection
+    ):
 
-        קורא הודעות ממנו
-        ומעביר אותן ל-BUS.
-        """
 
-        while True:
+        while connection.is_connected():
 
-            #קבל עד 1024 בתים מהחיבור
-            message = client.recv(
-                1024
-            )
+            message = connection.receive()
 
-            if not message:
+
+            if message is None:
                 break
 
-            text = message.decode() #מחזיר למחרוזת רגילה
 
 
-            event = {
+            self._bus.publish(
+                Event(
+                    EventType.CLIENT_MESSAGE,
+                    {
+                        "connection": connection,
+                        "message": message
+                    }
+                )
+            )
 
-                "type":"CLIENT_MESSAGE",
 
-                "data":text
 
-            }
-            self.bus.publish(event)
+        self._connection_manager.remove(
+            connection
+        )
+
+
+        connection.close()
+
+
+
+    def stop(self):
+
+        self._running = False
+
+
+        if self._server_socket:
+
+            self._server_socket.close()

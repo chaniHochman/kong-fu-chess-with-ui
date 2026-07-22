@@ -1,5 +1,10 @@
 # מנהלת את כל ה־Sessions הפעילים.
-
+# אחראי על:
+# User
+# Room
+# Game
+# Reconnect
+# Timeout
 
 class SessionManager:
     """
